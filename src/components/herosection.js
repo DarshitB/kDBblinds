@@ -45,7 +45,7 @@ function Herosection() {
                     fontWeight: "700",
                   }}
                 >
-                  beautiful windows
+                  beautiful dsdfsdf windows
                 </span>
               </h3>
             </div>
