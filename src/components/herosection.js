@@ -4,7 +4,6 @@ import { Navigation, A11y, Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { Link } from "react-router-dom";
 function Herosection() {
   return (
     <>
@@ -45,7 +44,7 @@ function Herosection() {
                     fontWeight: "700",
                   }}
                 >
-                  beautiful dsdfsdf windows
+                  beautiful windows
                 </span>
               </h3>
             </div>

@@ -20,14 +20,12 @@ function Home() {
               autoplay={{ delay: 2000 }}
             >
               <SwiperSlide>
-                Good news! We’re dispatching as normal with contactless
-                delivery.
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry.
               </SwiperSlide>
+              <SwiperSlide>Lorem Ipsum is simply dummy text</SwiperSlide>
               <SwiperSlide>
-                Next Day Dispatch Available on Selected Blinds
-              </SwiperSlide>
-              <SwiperSlide>
-                Measure with confidence. MeasureSure Cover available
+                Lorem Ipsum of the printing and typesetting industry.
               </SwiperSlide>
             </Swiper>
           </div>

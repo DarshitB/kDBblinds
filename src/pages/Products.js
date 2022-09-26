@@ -443,8 +443,8 @@ function Products() {
                       <div className="inner-quality-box">
                         <h4>The Perfect Fit</h4>
                         <p>
-                          We make your blind just for you, by hand, to your
-                          exact specification. No compromises.
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
                         </p>
                       </div>
                     </div>
@@ -454,8 +454,8 @@ function Products() {
                       <div className="inner-quality-box">
                         <h4>Next Day Dispatch Available</h4>
                         <p>
-                          We make your blind just for you, by hand, to your
-                          exact specification. No compromises.
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
                         </p>
                       </div>
                     </div>
@@ -465,8 +465,8 @@ function Products() {
                       <div className="inner-quality-box">
                         <h4>5 Year Quality Guarantee</h4>
                         <p>
-                          We make your blind just for you, by hand, to your
-                          exact specification. No compromises.
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
                         </p>
                       </div>
                     </div>

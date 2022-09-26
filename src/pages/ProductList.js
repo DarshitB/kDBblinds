@@ -120,19 +120,19 @@ function ProductList() {
                         <li>
                           <div
                             className={`filter-link ${
-                              cat === "Clip-on" ? "show" : ""
+                              cat === "patricia" ? "show" : ""
                             }`}
                           >
-                            <Link to="/blindlist/Clip-on">Clip On</Link>
+                            <Link to="/blindlist/patricia">Patricia</Link>
                           </div>
                         </li>
                         <li>
                           <div
                             className={`filter-link ${
-                              cat === "Electric" ? "show" : ""
+                              cat === "Daynnight" ? "show" : ""
                             }`}
                           >
-                            <Link to="/blindlist/Electric">Electric</Link>
+                            <Link to="/blindlist/Daynnight">Day Nighty</Link>
                           </div>
                         </li>
                         <li>
@@ -191,39 +191,6 @@ function ProductList() {
                             />
                           </div>
                         </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <hr className="hrtage" />
-                  <div className="filter-group">
-                    <h6>Pattern</h6>
-                    <div className="filter-content">
-                      <ul className="list-menu">
-                        <li>eople</li>
-                        <li>Watches</li>
-                        <li>Cinema</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <hr className="hrtage" />
-                  <div className="filter-group">
-                    <h6>Pattern</h6>
-                    <div className="filter-content">
-                      <ul className="list-menu">
-                        <li>eople</li>
-                        <li>Watches</li>
-                        <li>Cinema</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <hr className="hrtage" />
-                  <div className="filter-group">
-                    <h6>Pattern</h6>
-                    <div className="filter-content">
-                      <ul className="list-menu">
-                        <li>eople</li>
-                        <li>Watches</li>
-                        <li>Cinema</li>
                       </ul>
                     </div>
                   </div>

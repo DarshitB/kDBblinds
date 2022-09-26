@@ -78,86 +78,59 @@ function Navbar() {
       </nav>
       <nav className=" navigation  dropdwnmenu ">
         <div className="nav-item-top">
-          <p className="navmanuname">Roller Blinds</p>
+          <p className="navmanuname">Blinds Category</p>
           <div className="nav-submenu-wrap">
             <div className="containe py-4">
-              <p className="mainhading-afterdowpdown">lorem impsam</p>
+              <p className="mainhading-afterdowpdown">
+                Various Categories of Blinds
+              </p>
               <div className="subnameny-items-container">
-                <Link to="/blindlist">
+                <Link to="/blindlist/Wooden">
                   <div className="subnameny-items">
                     <div className="subnav-img-container">
-                      <img
-                        src="/assets/img/vertical-blind-category.jpg"
-                        alt=""
-                      />
+                      <img src="/assets/img/t-wooden.jpg" alt="" />
                     </div>
-                    <p className=" w-100">lorem Impsam </p>
+                    <p className="w-100">Wooden</p>
                   </div>
                 </Link>
-                <Link to="/blindlist">
+                <Link to="/blindlist/Roller">
                   <div className="subnameny-items">
                     <div className="subnav-img-container">
-                      <img
-                        src="/assets/img/vertical-blind-category.jpg"
-                        alt=""
-                      />
+                      <img src="/assets/img/t-Roller.jpg" alt="" />
                     </div>
-                    <p className=" w-100">lorem Impsam </p>
+                    <p className=" w-100">Roller</p>
                   </div>
                 </Link>
-                <Link to="/blindlist">
+                <Link to="/blindlist/patricia">
                   <div className="subnameny-items">
                     <div className="subnav-img-container">
-                      <img
-                        src="/assets/img/vertical-blind-category.jpg"
-                        alt=""
-                      />
+                      <img src="/assets/img/t-Patricia.jpg" alt="" />
                     </div>
-                    <p className=" w-100">lorem Impsam </p>
+                    <p className=" w-100">Patricia</p>
                   </div>
                 </Link>
-                <Link to="/blindlist">
+                <Link to="/blindlist/Daynnight">
                   <div className="subnameny-items">
                     <div className="subnav-img-container">
-                      <img
-                        src="/assets/img/vertical-blind-category.jpg"
-                        alt=""
-                      />
+                      <img src="/assets/img/t-daynight.webp" alt="" />
                     </div>
-                    <p className=" w-100">lorem Impsam </p>
+                    <p className=" w-100">Day & Nighty Blinds</p>
                   </div>
                 </Link>
-                <Link to="/blindlist">
+                <Link to="/blindlist/Roman">
                   <div className="subnameny-items">
                     <div className="subnav-img-container">
-                      <img
-                        src="/assets/img/vertical-blind-category.jpg"
-                        alt=""
-                      />
+                      <img src="/assets/img/t-Roman.jpg" alt="" />
                     </div>
-                    <p className=" w-100">lorem Impsam </p>
+                    <p className=" w-100">Roman</p>
                   </div>
                 </Link>
-                <Link to="/blindlist">
+                <Link to="/blindlist/Vertical">
                   <div className="subnameny-items">
                     <div className="subnav-img-container">
-                      <img
-                        src="/assets/img/vertical-blind-category.jpg"
-                        alt=""
-                      />
+                      <img src="/assets/img/t-Vertical.jpg" alt="" />
                     </div>
-                    <p className=" w-100">lorem Impsam </p>
-                  </div>
-                </Link>
-                <Link to="/blindlist">
-                  <div className="subnameny-items">
-                    <div className="subnav-img-container">
-                      <img
-                        src="/assets/img/vertical-blind-category.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <p className=" w-100">lorem Impsam </p>
+                    <p className=" w-100">Vertical</p>
                   </div>
                 </Link>
               </div>
@@ -165,20 +138,14 @@ function Navbar() {
           </div>
         </div>
         <div className="nav-item-top">
-          <p className="navmanuname">Pleated Blinds</p>
-          <div className="nav-submenu-wrap">5464654654</div>
-        </div>
-        <div className="nav-item-top">
-          <p className="navmanuname">Roman Blinds</p>
-          <div className="nav-submenu-wrap">aaaaaaaaaaa</div>
-        </div>
-        <div className="nav-item-top">
-          <p className="navmanuname">Vertical Blinds</p>
-          <div className="nav-submenu-wrap">sssssssssss</div>
-        </div>
-        <div className="nav-item-top">
-          <p className="navmanuname">Venetian Blinds</p>
-          <div className="nav-submenu-wrap">ddddddddddd</div>
+          <p className="navmanuname">Blinds colors</p>
+          <div className="nav-submenu-wrap">
+            <div className="containe py-4">
+              <p className="mainhading-afterdowpdown">
+                Various colors of Blinds
+              </p>
+            </div>
+          </div>
         </div>
       </nav>
     </>

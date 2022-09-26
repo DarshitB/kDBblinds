@@ -6,7 +6,7 @@ function HowToMassure() {
       <div className="how-to-massure">
         <div className="massure-mox">
           <div className="masusre-img-container">
-            <img src="/assets/img/How_to_guide_Image.webp" alt="" />
+            <img src="/assets/img/slide-interior-3.jpg" alt="" />
           </div>
           <div className="massure-datailes-container">
             <div className="massure-detaile-box">
