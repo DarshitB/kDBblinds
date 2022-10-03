@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Footer from "../components/footer";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { publicRequest } from "../requestMethods";
 import { useDispatch, useSelector } from "react-redux";
-import { removeProduct, decreaseCart, increaseCart } from "../redux/cartRedux";
+import {
+  removeProduct,
+  decreaseCart,
+  increaseCart,
+  emptyCart,
+} from "../redux/cartRedux";
 import Model from "../components/model";
+import { PayPalButton } from "react-paypal-button-v2";
+import { toast } from "react-toastify";
+import axios from "axios";
 function Cart() {
   const cart = useSelector((state) => state.cart);
 
@@ -127,8 +136,103 @@ function Cart() {
       );
     }
   };
-
+  const [skdredy, setsdkredy] = useState({
+    Payment: "",
+    adress: "",
+    city: "",
+    fname: "",
+    lname: "",
+    pnumver: "",
+    zipcode: "",
+  });
+  const [isaddscript, setisaddscript] = useState(false);
+  const [paymentmethod, setpaymentmethod] = useState();
+  const handelepayoption = async (e) => {
+    const { name, value } = e.target;
+    setsdkredy({ ...skdredy, [name]: value });
+    /* if (value === "Paypal") {
+      setisaddscript(true);
+    } else {
+      setsdkredy(false);
+    } */
+  };
+  useEffect(() => {
+    if (
+      skdredy.Payment !== "" &&
+      skdredy.adress !== "" &&
+      skdredy.city !== "" &&
+      skdredy.fname !== "" &&
+      skdredy.lname !== "" &&
+      skdredy.pnumver !== "" &&
+      skdredy.zipcode !== ""
+    ) {
+      if (skdredy.Payment === "Paypal") {
+        setpaymentmethod(skdredy.Payment);
+        setisaddscript(true);
+      } else {
+        setpaymentmethod(skdredy.Payment);
+        setisaddscript(false);
+      }
+    }
+  }, [skdredy]);
   const user = useSelector((state) => state.user.currentUser);
+
+  const [notlogin, setnotlogin] = useState(true);
+  const handelvalidetclick = () => {
+    if (!user) {
+      setnotlogin(false);
+    }
+  };
+  const handelordersubmit = (e) => {
+    e.preventDefault();
+  };
+
+  const history = useHistory();
+  const succeespayment = async (paymentresult) => {
+    if (paymentresult.status === "COMPLETED") {
+      const orderdetailes = {
+        orderDate: paymentresult.update_time,
+        userId: user._id,
+        produts: cart.products.map((item) => ({
+          productId: item._id,
+          Width: item.width,
+          Drop: item.drop,
+          FittingOption: item.fitting.optionData,
+          SizeOption: item.Size.optionData,
+          ControlOption: item.Control.optionData,
+          CassetteOption: item.Cassette.optionData,
+          quantity: item.Qtyvalue,
+        })),
+        amount: totalcost,
+        userAddress: [
+          {
+            FirstName: skdredy.fname,
+            LastName: skdredy.lname,
+            Address: skdredy.adress,
+            City: skdredy.city,
+            Postcode: skdredy.zipcode,
+            PhoneNo: skdredy.pnumver,
+          },
+        ],
+        shipingMathod: delivaryname,
+        installationServices: [
+          {
+            installationArea: Installationname,
+            Appointment: Installationapointdate,
+          },
+        ],
+        paymentMethod: paymentmethod,
+        Status: paymentresult.status,
+      };
+
+      history.push("/success", {
+        paypalData: paymentresult,
+        order: orderdetailes,
+      });
+    } else {
+      toast.error("Something went wrong payment is not succeeded");
+    }
+  };
   return (
     <>
       <div className="caret-main-wapper">
@@ -165,412 +269,482 @@ function Cart() {
           </section>
           {cart.total !== 0 ? (
             <div className="container-fluid shopingcartdetailes">
-              <div className="row">
-                <div className="col-md-8">
-                  <div className="login-detiles login-a">
-                    <div className="w-75">
-                      <h4>Login</h4>
-                      <p className="m-0">
-                        {user ? "My Name - " + user.username : ""}
-                      </p>
-                    </div>
-                    <div className="w-25 ">
-                      <button className="change-login-btn">
-                        {user ? "Change" : "Login"}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="login-detiles Billing-b">
-                    <div className="w-100">
-                      <h4>Billing/Shipping Address</h4>
-                      <div className="d-flex mt-4 mb-3">
-                        <div className="namebox pr-1">
-                          <input
-                            type="text"
-                            className="searchbox"
-                            placeholder="First Name"
-                            required
-                          />
-                        </div>
-                        <div className="namebox pl-1">
-                          <input
-                            type="text"
-                            className="searchbox"
-                            placeholder="Last Name"
-                            required
-                          />
-                        </div>
+              <form onSubmit={handelordersubmit}>
+                <div className="row">
+                  <div className="col-md-8">
+                    <div
+                      className={`login-detiles login-a ${
+                        notlogin ? "" : "notvalicate"
+                      }`}
+                    >
+                      <div className="w-75">
+                        <h4>Login*</h4>
+                        <p className="m-0">
+                          {user ? "My Name - " + user.username : ""}
+                        </p>
                       </div>
-                      <textarea
-                        placeholder="Street Address"
-                        className="address-box mb-3"
-                        maxlength="255"
-                      ></textarea>
-                      <div className="d-flex mb-3">
-                        <div className="namebox pr-1">
-                          <input
-                            type="text"
-                            className="searchbox"
-                            placeholder="Country"
-                            value="United Kingdom"
-                            required
-                          />
-                        </div>
-                        <div className="namebox pl-1">
-                          <input
-                            type="text"
-                            className="searchbox"
-                            placeholder="City"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div className="d-flex mb-3">
-                        <div className="namebox pr-1">
-                          <input
-                            type="text"
-                            className="searchbox"
-                            placeholder="Postcode"
-                            required
-                          />
-                        </div>
-                        <div className="namebox pl-1">
-                          <input
-                            type="text"
-                            className="searchbox"
-                            placeholder="Phone Number"
-                            required
-                          />
-                        </div>
+                      <div className="w-25 ">
+                        {user ? (
+                          ""
+                        ) : (
+                          <Link to="/login">
+                            <button className="change-login-btn" type="button">
+                              Login
+                            </button>
+                          </Link>
+                        )}
                       </div>
                     </div>
-                  </div>
-                  <div className="login-detiles Shipping-c">
-                    <div className="w-100">
-                      <h4>Shipping Method</h4>
-                      <div className="d-flex mt-4">
-                        <div className="Brackets-box">
-                          <input
-                            type="radio"
-                            id="ceiling"
-                            value="Standard Delivery"
-                            name="Brackets"
-                            onChange={delivarymethod}
-                          />
-                          <label htmlFor="ceiling">
-                            Standard Delivery - £7.99
-                          </label>
+                    <div className="login-detiles Billing-b">
+                      <div className="w-100">
+                        <h4>Billing/Shipping Address*</h4>
+                        <div className="d-flex mt-4 mb-3">
+                          <div className="namebox pr-1">
+                            <input
+                              type="text"
+                              className="searchbox fname"
+                              placeholder="First Name"
+                              name="fname"
+                              onChange={handelepayoption}
+                              required
+                            />
+                          </div>
+                          <div className="namebox pl-1">
+                            <input
+                              type="text"
+                              className="searchbox sname"
+                              placeholder="Last Name"
+                              name="lname"
+                              onChange={handelepayoption}
+                              required
+                            />
+                          </div>
                         </div>
-                        <div className="Brackets-box">
-                          <input
-                            type="radio"
-                            id="wall"
-                            name="Brackets"
-                            value="Next Day Dispatch"
-                            onChange={delivarymethod}
-                          />
-                          <label htmlFor="wall">
-                            Next Day Dispatch - £14.99
-                          </label>
+                        <textarea
+                          placeholder="Street Address"
+                          className="address-box mb-3 sadress"
+                          maxlength="255"
+                          onChange={handelepayoption}
+                          name="adress"
+                        ></textarea>
+                        <div className="d-flex mb-3">
+                          <div className="namebox pr-1">
+                            <input
+                              type="text"
+                              className="searchbox"
+                              placeholder="Country"
+                              name="country"
+                              value="United Kingdom"
+                              required
+                            />
+                          </div>
+                          <div className="namebox pl-1">
+                            <input
+                              type="text"
+                              className="searchbox city"
+                              placeholder="City"
+                              onChange={handelepayoption}
+                              name="city"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <div className="d-flex mb-3">
+                          <div className="namebox pr-1">
+                            <input
+                              type="text"
+                              className="searchbox zipcode"
+                              placeholder="Postcode"
+                              name="zipcode"
+                              onChange={handelepayoption}
+                              required
+                            />
+                          </div>
+                          <div className="namebox pl-1">
+                            <input
+                              type="text"
+                              className="searchbox pnumber"
+                              placeholder="Phone Number"
+                              name="pnumver"
+                              onChange={handelepayoption}
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="login-detiles installation-d">
-                    <div className="w-100">
-                      <h4>Installation Services</h4>
-                      <div className=" mt-4">
-                        <div className="Brackets-box">
-                          <input
-                            type="radio"
-                            id="installation"
-                            name="installation"
-                            onClick={handleinstal}
-                            checked={instalcheck}
-                          />
-                          <label htmlFor="ceiling">
-                            Click to add blind installation service - £19.99
-                          </label>
+                    <div className="login-detiles Shipping-c">
+                      <div className="w-100">
+                        <h4>Shipping Method</h4>
+                        <div className="d-flex mt-4">
+                          <div className="Brackets-box">
+                            <input
+                              type="radio"
+                              id="ceiling"
+                              value="Standard Delivery"
+                              name="Brackets"
+                              onChange={delivarymethod}
+                            />
+                            <label htmlFor="ceiling">
+                              Standard Delivery - £7.99
+                            </label>
+                          </div>
+                          <div className="Brackets-box">
+                            <input
+                              type="radio"
+                              id="wall"
+                              name="Brackets"
+                              value="Next Day Dispatch"
+                              onChange={delivarymethod}
+                            />
+                            <label htmlFor="wall">
+                              Next Day Dispatch - £14.99
+                            </label>
+                          </div>
                         </div>
-                        <div
-                          className={`Brackets-box instalation-bracket-box ${
-                            instalcheck ? "show" : ""
-                          }`}
-                        >
+                      </div>
+                    </div>
+                    <div className="login-detiles installation-d">
+                      <div className="w-100">
+                        <h4>Installation Services</h4>
+                        <div className=" mt-4">
+                          <div className="Brackets-box">
+                            <input
+                              type="radio"
+                              id="installation"
+                              name="installation"
+                              onClick={handleinstal}
+                              checked={instalcheck}
+                            />
+                            <label htmlFor="ceiling">
+                              Click to add blind installation service - £19.99
+                            </label>
+                          </div>
                           <div
-                            className={`instlation-areabox ${
+                            className={`Brackets-box instalation-bracket-box ${
                               instalcheck ? "show" : ""
                             }`}
                           >
-                            <div className="mb-3">
-                              <p className="select-loc-head m-0">
-                                Select Your Area{" "}
-                              </p>
-                              <span>
-                                {Installationapointdate
-                                  ? " (Appointment date - " +
-                                    Installationapointdate +
-                                    " And Area - (" +
-                                    Installationname +
-                                    "))"
-                                  : ""}
-                              </span>
-                            </div>
-                            <div className="instlation-areabox-innerbox">
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="Bedfordshire"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="Bedfordshire">
-                                  Bedfordshire
-                                </label>
-                              </div>
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="Cambridgeshire"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="Cambridgeshire">
-                                  Cambridgeshire
-                                </label>
-                              </div>
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="Staffordshire"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="Staffordshire">
-                                  Staffordshire
-                                </label>
-                              </div>
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="Surrey"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="Surrey">Surrey</label>
-                              </div>
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="Lancashire"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="Lancashire">Lancashire</label>
-                              </div>
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="London"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="London">London</label>
-                              </div>
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="Cornwall"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="Cornwall">Cornwall</label>
-                              </div>
-                              <div className="locatoinselector-box">
-                                <input
-                                  type="radio"
-                                  name="installlocation"
-                                  id="none"
-                                  onChange={hanlearea}
-                                />
-                                <label htmlFor="none">none of the above</label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="login-detiles Payment-e">
-                    <div className="w-100">
-                      <h4>Payment Method</h4>
-                      <div className="mt-4">
-                        <div className="payment-options ">
-                          <input type="radio" id="Credit" name="Payment" />
-                          <label htmlFor="Credit">
-                            {" "}
-                            &nbsp;&nbsp;&nbsp;
-                            <img
-                              src="/assets/img/card-i.svg"
-                              alt=""
-                              className="caditcardimg"
-                            />{" "}
-                            &nbsp; Credit Card
-                          </label>
-                        </div>
-                        <div className="payment-options p-0">
-                          <input type="radio" id="Paypal" name="Payment" />
-                          <label htmlFor="Paypal">
-                            {" "}
-                            &nbsp;&nbsp;&nbsp;
-                            <img
-                              src="/assets/img/paypal-i.svg"
-                              alt=""
-                              className="caditcardimg"
-                            />{" "}
-                            &nbsp; Paypal
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="login-detiles order-summery-amount">
-                    <div className="w-100">
-                      <h4>Order Summary</h4>
-                      {cart.products.map((product) => (
-                        <div>
-                          <div className="orderd-items mt-4">
-                            <div className="orderd-item-img">
-                              <img alt="" src={`/assets/img/${product.img}`} />
-                            </div>
-                            <div className="order-item-name">
-                              <h6 className="m-0">{product.title}</h6>
-                              <div className="mt-2 d-flex">
-                                <button
-                                  onClick={() => handleIncrease(product)}
-                                  className="qty-plus-btns"
-                                >
-                                  +
-                                </button>
-                                <input
-                                  type="type"
-                                  value={product.Qtyvalue}
-                                  className="qty-number-box"
-                                />
-                                <button
-                                  onClick={() => handelDecreas(product)}
-                                  className="qty-minus-btns"
-                                >
-                                  -
-                                </button>
-                                <button
-                                  className="product-delele-btn"
-                                  onClick={() => handaledelproduct(product)}
-                                >
-                                  <div
-                                    className="d-flex justify-content-center align-item-center"
-                                    style={{ width: "50px" }}
-                                  >
-                                    <img src="/assets/img/delet-i.png" alt="" />
-                                  </div>
-                                </button>
-                              </div>
-                            </div>
-                            <div className="order-items-price">
-                              <h6 className="m-0">
-                                £
-                                {(
-                                  product.BliendPrice * product.Qtyvalue
-                                ).toFixed(2)}
-                              </h6>
-                            </div>
-                          </div>
-                          <div className="order-moredetailes">
-                            <div className="blanck-space"></div>
-                            <div className="ordermore-detiles">
-                              <h6 className="m-0 mb-1">
-                                <input
-                                  type="button"
-                                  value="View Detailes"
-                                  className="viewmorebtn"
-                                  name={product._id}
-                                  onClick={viewDetailes}
-                                  id={product.randomnumber}
-                                />
-                              </h6>
-                              {ViewD.perpro === product.randomnumber ? (
-                                <p className="m-0 text-capitalize">
-                                  <span>Width :</span> {product.width} MM |{" "}
-                                  <span>Drop :</span> {product.drop} MM |{" "}
-                                  <span>{product.fitting.OptionName} :</span>{" "}
-                                  {product.fitting.optionData} |{" "}
-                                  <span>{product.Size.OptionName} :</span>{" "}
-                                  {product.Size.optionData} |{" "}
-                                  <span>{product.Control.OptionName} :</span>{" "}
-                                  {product.Control.optionData} |{" "}
-                                  <span>{product.Cassette.OptionName} :</span>{" "}
-                                  {product.Cassette.optionData}
+                            <div
+                              className={`instlation-areabox ${
+                                instalcheck ? "show" : ""
+                              }`}
+                            >
+                              <div className="mb-3">
+                                <p className="select-loc-head m-0">
+                                  Select Your Area{" "}
                                 </p>
-                              ) : (
-                                ""
-                              )}
+                                <span>
+                                  {Installationapointdate
+                                    ? " (Appointment date - " +
+                                      Installationapointdate +
+                                      " And Area - (" +
+                                      Installationname +
+                                      "))"
+                                    : ""}
+                                </span>
+                              </div>
+                              <div className="instlation-areabox-innerbox">
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="Bedfordshire"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="Bedfordshire">
+                                    Bedfordshire
+                                  </label>
+                                </div>
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="Cambridgeshire"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="Cambridgeshire">
+                                    Cambridgeshire
+                                  </label>
+                                </div>
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="Staffordshire"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="Staffordshire">
+                                    Staffordshire
+                                  </label>
+                                </div>
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="Surrey"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="Surrey">Surrey</label>
+                                </div>
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="Lancashire"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="Lancashire">Lancashire</label>
+                                </div>
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="London"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="London">London</label>
+                                </div>
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="Cornwall"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="Cornwall">Cornwall</label>
+                                </div>
+                                <div className="locatoinselector-box">
+                                  <input
+                                    type="radio"
+                                    name="installlocation"
+                                    id="none"
+                                    onChange={hanlearea}
+                                  />
+                                  <label htmlFor="none">
+                                    none of the above
+                                  </label>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      ))}
+                      </div>
+                    </div>
+                    <div className="login-detiles Payment-e">
+                      <div className="w-100">
+                        <h4>Payment Method*</h4>
+                        <div className="mt-4">
+                          <div className="payment-options ">
+                            <input
+                              type="radio"
+                              id="Credit"
+                              name="Payment"
+                              value="Credit"
+                              onChange={handelepayoption}
+                              required
+                            />
+                            <label htmlFor="Credit">
+                              {" "}
+                              &nbsp;&nbsp;&nbsp;
+                              <img
+                                src="/assets/img/card-i.svg"
+                                alt=""
+                                className="caditcardimg"
+                              />{" "}
+                              &nbsp; Credit Card
+                            </label>
+                          </div>
+                          <div className="payment-options p-0">
+                            <input
+                              type="radio"
+                              id="Paypal"
+                              name="Payment"
+                              value="Paypal"
+                              onChange={handelepayoption}
+                              required
+                            />
+                            <label htmlFor="Paypal">
+                              {" "}
+                              &nbsp;&nbsp;&nbsp;
+                              <img
+                                src="/assets/img/paypal-i.svg"
+                                alt=""
+                                className="caditcardimg"
+                              />{" "}
+                              &nbsp; Paypal
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-4">
+                    <div className="login-detiles order-summery-amount">
+                      <div className="w-100">
+                        <h4>Order Summary</h4>
+                        {cart.products.map((product) => (
+                          <div>
+                            <div className="orderd-items mt-4">
+                              <div className="orderd-item-img">
+                                <img
+                                  alt=""
+                                  src={`/assets/img/${product.img}`}
+                                />
+                              </div>
+                              <div className="order-item-name">
+                                <h6 className="m-0">{product.title}</h6>
+                                <div className="mt-2 d-flex">
+                                  <button
+                                    onClick={() => handleIncrease(product)}
+                                    className="qty-plus-btns"
+                                  >
+                                    +
+                                  </button>
+                                  <input
+                                    type="type"
+                                    value={product.Qtyvalue}
+                                    className="qty-number-box"
+                                  />
+                                  <button
+                                    onClick={() => handelDecreas(product)}
+                                    className="qty-minus-btns"
+                                  >
+                                    -
+                                  </button>
+                                  <button
+                                    className="product-delele-btn"
+                                    onClick={() => handaledelproduct(product)}
+                                  >
+                                    <div
+                                      className="d-flex justify-content-center align-item-center"
+                                      style={{ width: "50px" }}
+                                    >
+                                      <img
+                                        src="/assets/img/delet-i.png"
+                                        alt=""
+                                      />
+                                    </div>
+                                  </button>
+                                </div>
+                              </div>
+                              <div className="order-items-price">
+                                <h6 className="m-0">
+                                  £
+                                  {(
+                                    product.BliendPrice * product.Qtyvalue
+                                  ).toFixed(2)}
+                                </h6>
+                              </div>
+                            </div>
+                            <div className="order-moredetailes">
+                              <div className="blanck-space"></div>
+                              <div className="ordermore-detiles">
+                                <h6 className="m-0 mb-1">
+                                  <input
+                                    type="button"
+                                    value="View Detailes"
+                                    className="viewmorebtn"
+                                    name={product._id}
+                                    onClick={viewDetailes}
+                                    id={product.randomnumber}
+                                  />
+                                </h6>
+                                {ViewD.perpro === product.randomnumber ? (
+                                  <p className="m-0 text-capitalize">
+                                    <span>Width :</span> {product.width} MM |{" "}
+                                    <span>Drop :</span> {product.drop} MM |{" "}
+                                    <span>{product.fitting.OptionName} :</span>{" "}
+                                    {product.fitting.optionData} |{" "}
+                                    <span>{product.Size.OptionName} :</span>{" "}
+                                    {product.Size.optionData} |{" "}
+                                    <span>{product.Control.OptionName} :</span>{" "}
+                                    {product.Control.optionData} |{" "}
+                                    <span>{product.Cassette.OptionName} :</span>{" "}
+                                    {product.Cassette.optionData}
+                                  </p>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
 
-                      <hr />
-                      <table className="table-of-order-prices">
-                        <tr>
-                          <th>Sub Total Inc. Vat</th>
-                          <td>£{cart.total.toFixed(2)}</td>
-                        </tr>
-                        <tr>
-                          <th>
-                            <span>Delivery With</span>
-                            <span>{delivaryname}</span>
-                          </th>
-                          <td>£{delivarycost}</td>
-                        </tr>
-                        {instalcheck ? (
+                        <hr />
+                        <table className="table-of-order-prices">
+                          <tr>
+                            <th>Sub Total Inc. Vat</th>
+                            <td>£{cart.total.toFixed(2)}</td>
+                          </tr>
                           <tr>
                             <th>
-                              <span>Installation At</span>
-                              <span>
-                                {Installationname} {Installationapointdate}
+                              <span>Delivery With</span>
+                              <span>{delivaryname}</span>
+                            </th>
+                            <td>£{delivarycost}</td>
+                          </tr>
+                          {instalcheck ? (
+                            <tr>
+                              <th>
+                                <span>Installation At</span>
+                                <span>
+                                  {Installationname} {Installationapointdate}
+                                </span>
+                              </th>
+                              <td>£{Installationcost}</td>
+                            </tr>
+                          ) : (
+                            ""
+                          )}
+                          <tr>
+                            <th>
+                              <hr />
+                            </th>
+                            <td>
+                              <hr />
+                            </td>
+                          </tr>
+                          <tr className="totalcostbold">
+                            <th>
+                              <span className="maintotal">Total</span>
+                              <span>Estimated Delivery Date:</span>
+                              <span className="delivarydate">
+                                {delivarydate}
                               </span>
                             </th>
-                            <td>£{Installationcost}</td>
+                            <td>£{totalcost}</td>
                           </tr>
-                        ) : (
-                          ""
-                        )}
-                        <tr>
-                          <th>
-                            <hr />
-                          </th>
-                          <td>
-                            <hr />
-                          </td>
-                        </tr>
-                        <tr className="totalcostbold">
-                          <th>
-                            <span className="maintotal">Total</span>
-                            <span>Estimated Delivery Date:</span>
-                            <span className="delivarydate">{delivarydate}</span>
-                          </th>
-                          <td>£{totalcost}</td>
-                        </tr>
-                      </table>
-                      <div className="button-forplacingorder">
-                        <button className="order-pace">Order Place</button>
+                        </table>
+                        <div className="button-forplacingorder">
+                          {isaddscript ? (
+                            <div className="pypal-btn-container">
+                              <div className="paypal-btn">
+                                <PayPalButton
+                                  amount={totalcost}
+                                  onSuccess={succeespayment}
+                                  currency="GBP"
+                                />
+                              </div>
+                              <button className="order-pace">
+                                Order Place
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              className="order-pace"
+                              type="submit"
+                              onClick={handelvalidetclick}
+                            >
+                              Order Place
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </form>
             </div>
           ) : (
             ""

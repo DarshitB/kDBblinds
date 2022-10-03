@@ -11,6 +11,7 @@ const userSlice = createSlice({
   reducers: {
     loginStart: (state) => {
       state.isFetching = true;
+      state.error = false;
     },
     loginSuccess: (state, action) => {
       state.isFetching = false;
@@ -22,6 +23,7 @@ const userSlice = createSlice({
     loginFalure: (state) => {
       state.isFetching = false;
       state.error = true;
+      toast.error(`Please enter correct email and password`);
     },
     logOut: (state) => {
       state.isFetching = false;

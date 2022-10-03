@@ -347,3 +347,25 @@
   overflow-x: hidden;
   background-color: #fff;
 }
+.ProductList-page-wrapper .fixedcalss.fixed {
+  position: unset !important;
+  box-shadow: unset;
+}
+.product-detailes-page-wrapper .fixedcalss.fixed {
+  position: unset !important;
+  box-shadow: unset;
+}
+.ProductList-page-wrapper
+  .fixedcalss.fixed
+  .dropdwnmenu
+  .nav-item-top
+  .navmanuname {
+  padding: 0 18px;
+}
+.product-detailes-page-wrapper
+  .fixedcalss.fixed
+  .dropdwnmenu
+  .nav-item-top
+  .navmanuname {
+  padding: 0 18px;
+}

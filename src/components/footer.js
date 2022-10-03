@@ -16,7 +16,6 @@ function Footer() {
                     <li>Warranty</li>
                     <li>Delivery & collection</li>
                     <li>Returns & refunds</li>
-                    <li>Pricing comparison</li>
                   </ul>
                 </div>
               </div>
@@ -27,7 +26,6 @@ function Footer() {
                     <li>How to Measure</li>
                     <li>How to Install</li>
                     <li>How to Set Up Electric Blinds</li>
-                    <li>Sleep Calculator</li>
                   </ul>
                 </div>
               </div>
@@ -35,14 +33,12 @@ function Footer() {
                 <div className="innervalue-of-footer">
                   <h5>About us</h5>
                   <ul>
-                    <li>About us</li>
-                    <li>KBD for Business</li>
                     <li>Careers</li>
                   </ul>
-                  <h5>Partner with Us</h5>
+                  <h5 className="mt-5">Terms & Policy</h5>
                   <ul>
-                    <li>Become an Ambassador</li>
-                    <li>Become an Affiliate</li>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
                   </ul>
                 </div>
               </div>
@@ -82,14 +78,14 @@ function Footer() {
               <div className="col-md-12">
                 <div className="d-flex pt-4">
                   <div className="border w-50 py-3">
-                    <div className="text-center">
+                    <div className="text-center h-100 d-flex align-items-center justify-content-center">
                       <p className="m-0">
                         © KBD Blinds {new Date().getFullYear()}, All Rights
                         Reserved. <br /> 15 Western Gateway, London E16 1AP, UK
                       </p>
-                      <a className="m-0">Terms & Conditions</a>{" "}
+                      {/*  <a className="m-0">Terms & Conditions</a>{" "}
                       &nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-                      <a className="m-0">Privacy Policy</a>
+                      <a className="m-0">Privacy Policy</a> */}
                     </div>
                   </div>
                   <div className="border w-50 py-3">
@@ -98,6 +94,7 @@ function Footer() {
                       <img src="/assets/img/fb-i.png" />
                       <img src="/assets/img/youtube-i.png" />
                       <img src="/assets/img/twitter-i.png" />
+                      <img src="/assets/img/wp-i.png" />
                     </div>
                   </div>
                 </div>

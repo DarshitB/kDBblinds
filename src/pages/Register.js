@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-function Register() {
+import { publicRequest } from "../requestMethods";
+import { toast } from "react-toastify";
+
+function Register({ updaterespons }) {
   const [passwordType, setPasswordType] = useState("password");
   const [eyropacity, setEyropacity] = useState(true);
   const togglePassword = () => {
@@ -12,25 +15,43 @@ function Register() {
     setPasswordType("password");
     setEyropacity(true);
   };
+
+  const [fname, setFname] = useState("");
+  const [sname, setSname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState();
+  const [cpassword, setCpassword] = useState();
+
+  const handleregistreation = async (e) => {
+    e.preventDefault();
+    if (password === cpassword) {
+      const registration = {
+        username: fname + sname,
+        email: email,
+        password: password,
+      };
+      const res = await publicRequest.post("/auth/register", registration);
+      if (res.status === 201) {
+        updaterespons(true);
+        toast.success("Your account registration is a success");
+      } else {
+        toast.error("Something went wrong, please try again later");
+      }
+    } else {
+      setCpassword("");
+      toast.error(
+        "The passwords are not matched, Please enter the same password"
+      );
+    }
+  };
+
   return (
     <>
       <div className="Register-wrapper">
-        <div className="navbar navbar-expand-lg flex-column">
-          <div className="topNav row">
-            <div className="logodiv col-md-2">
-              <Link className="navbar-brand" to="/">
-                <img
-                  src="/assets/img/logobgw.png"
-                  className="navbar-logo"
-                  alt=""
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="login-form-wrapper">
-          <div className="container-fluid">
-            <div className="row">
+        <div className="logo-container"></div>
+        <div className="login-form-wrapper position-relative h-100">
+          <div className="container-fluid h-100">
+            <div className="row justify-content-center align-items-center h-100">
               <div className="col-md-6">
                 <div className="mt-4 login-form-container">
                   <h1>Create New Account</h1>
@@ -43,6 +64,7 @@ function Register() {
                         type="text"
                         className="searchbox"
                         placeholder="First Name"
+                        onChange={(e) => setFname(e.target.value)}
                         required
                       />
                     </div>
@@ -51,6 +73,7 @@ function Register() {
                         type="text"
                         className="searchbox"
                         placeholder="Last Name"
+                        onChange={(e) => setSname(e.target.value)}
                         required
                       />
                     </div>
@@ -60,6 +83,7 @@ function Register() {
                       type="email"
                       className="searchbox"
                       placeholder="Email Address"
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </div>
@@ -67,8 +91,10 @@ function Register() {
                     <div className="pass-box">
                       <input
                         type={passwordType}
-                        className="searchbox"
-                        placeholder=" Password"
+                        className="searchbox "
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                       />
                       <img
@@ -85,23 +111,26 @@ function Register() {
                         type={passwordType}
                         className="searchbox"
                         placeholder="Confirm Password"
+                        value={cpassword}
+                        onChange={(e) => setCpassword(e.target.value)}
                         required
                       />
                     </div>
                   </div>
 
                   <div className="mt-3 mb-2">
-                    <button className="login-btn">Create Account</button>
+                    <button className="login-btn" onClick={handleregistreation}>
+                      Create Account
+                    </button>
                   </div>
                   <span>
                     Alredy have an account? &nbsp;
                     <Link to="/login">LogIn Here</Link>
                   </span>
+                  <span style={{ float: "right" }}>
+                    <Link to="/">Back to Home</Link>
+                  </span>
                 </div>
-              </div>
-              <div className="col-md-6"></div>
-              <div className="backgrounddivbox">
-                <img className="" alt="" src="/assets/img/logBliend-i.svg" />
               </div>
             </div>
           </div>

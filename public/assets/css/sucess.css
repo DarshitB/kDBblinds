@@ -1,0 +1,54 @@
+.sucess-header {
+  background-color: #d4edda;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sucess-logo {
+  height: 80%;
+  mix-blend-mode: multiply;
+}
+.order-confirmd-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.order-confirmd-box .loading-image {
+  height: 400px;
+  width: auto;
+}
+.product-detailes {
+  padding-top: 3rem;
+}
+.product-main-detailes {
+  border-top: 1px solid rgb(225, 225, 225);
+  border-bottom: 1px solid rgb(225, 225, 225);
+  padding: 2rem 1rem;
+}
+.product-listing {
+  display: flex;
+}
+.order-detailes span {
+  text-transform: capitalize;
+  color: #aaa;
+  font-size: 18px;
+}
+.order-detailes p {
+  color: #000;
+  font-size: 18px;
+  margin: 0%;
+}
+.product-wraper {
+  border: 1px solid rgb(225, 225, 225);
+  border-radius: 14px;
+  margin-top: 1rem;
+}
+.order-id-n-dtiles {
+  padding: 1rem 2rem;
+  display: flex;
+}
+.mr-3 {
+  margin-right: 1rem;
+}

@@ -257,3 +257,53 @@ html {
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
 }
+#loading {
+  height: 24px;
+}
+.spinner {
+  width: 23px;
+  height: 23px;
+  display: inline-block;
+  padding: 0px;
+  border-radius: 100% !important;
+  border: 3px solid;
+  border-top-color: rgba(255, 255, 255, 0.65);
+  border-bottom-color: rgba(255, 255, 255, 0.65);
+  border-left-color: rgba(255, 255, 255, 0.15);
+  border-right-color: rgba(255, 255, 255, 0.15);
+  -webkit-animation: quickloader 0.8s ease-in-out infinite alternate;
+  animation: quickloader 0.8s ease-in-out infinite alternate;
+}
+@keyframes quickloader {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes quickloader {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.paypal-btn {
+  opacity: 0 !important;
+}
+.pypal-btn-container {
+  position: relative;
+}
+
+.pypal-btn-container .paypal-btn {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  z-index: 10000;
+  width: 100%;
+}

@@ -15,12 +15,23 @@ import Cart from "./pages/cart";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
+import Success from "./pages/success";
+import YourOrder from "./pages/yourOrder";
 function App() {
   const user = useSelector((state) => state.user.currentUser);
+
+  const [Redirectreggister, setRedirectreggister] = useState(false);
   return (
     <Router>
       <ToastContainer />
       <Switch>
+        <Route path="/yourorder">
+          <YourOrder />
+        </Route>
+        <Route path="/success">
+          <Success />
+        </Route>
         <Route path="/blindlist">
           <ProductList />
         </Route>
@@ -38,7 +49,11 @@ function App() {
         </Route>
         <Route path="/login"> {user ? <Redirect to="/" /> : <Login />} </Route>
         <Route path="/register">
-          {user ? <Redirect to="/" /> : <Register />}
+          {Redirectreggister ? (
+            <Redirect to="/login" />
+          ) : (
+            <Register updaterespons={setRedirectreggister} />
+          )}
         </Route>
         <Route path="/" exact>
           <Home />

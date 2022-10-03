@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { login } from "../redux/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
-
+import Loader from "../components/loader";
 function Login() {
   const [passwordType, setPasswordType] = useState("password");
   const togglePassword = () => {
@@ -14,89 +14,137 @@ function Login() {
   };
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [ShowLoader, setShowLoader] = useState(false);
   const despatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
   const handlelogin = (e) => {
     e.preventDefault();
     login(despatch, { username, password });
+    setShowLoader(true);
   };
+
   return (
     <>
-      <div className="login-wrapper">
-        <div className="navbar navbar-expand-lg flex-column">
-          <div className="topNav row">
-            <div className="logodiv col-md-2">
-              <Link className="navbar-brand" to="/">
-                <img
-                  src="/assets/img/logobgw.png"
-                  className="navbar-logo"
-                  alt=""
-                />
-              </Link>
-            </div>
-          </div>
-        </div>
-        <div className="login-form-wrapper">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-6">
-                <div className="mt-5 login-form-container">
-                  <h1>Log Into KDB Blinds</h1>
-                  <p>
-                    If you have an account, sign in with your email address.
-                  </p>
-                  {error && (
-                    <p className="alert alert-danger py-1 mt-2 mb-0">
-                      Something went wrong
-                    </p>
-                  )}
-                  <form>
-                    <div className="email-box">
-                      <input
-                        type="text"
-                        className="searchbox"
-                        placeholder="Email..."
-                        onChange={(e) => setUsername(e.target.value)}
-                      />
+      <div className="login-wrapper-main">
+        <div className="logo-container"></div>
+        <div className="position-relative">
+          <div className="login-wrapper">
+            <div className="login-form-wrapper h-100">
+              <div className="container-fluid h-100">
+                <div className="row justify-content-center align-items-center h-100">
+                  <div className="col-md-6">
+                    <div className="login-form-container">
+                      <h1>Log Into KDB Blinds</h1>
+                      <p>
+                        If you have an account, sign in with your email address.
+                      </p>
+                      <form>
+                        <div className="email-box">
+                          <input
+                            type="text"
+                            className="searchbox"
+                            placeholder="Email..."
+                            onChange={(e) => setUsername(e.target.value)}
+                          />
+                        </div>
+                        <div className="pass-box">
+                          <input
+                            type={passwordType}
+                            className="searchbox"
+                            placeholder="Password..."
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                          <img
+                            src="/assets/img/eye-i.svg"
+                            className="passwordshowbtn"
+                            onClick={togglePassword}
+                            alt=""
+                          />
+                        </div>
+                        <div className="pb-2">
+                          <input type="checkbox" id="Remamberme" /> &nbsp;
+                          <label htmlFor="Remamberme">Remamber me</label>
+                        </div>
+                        <Link to="">Forgot Password?</Link>
+                        <div className="mt-3 mb-2">
+                          <button
+                            className="login-btn"
+                            onClick={handlelogin}
+                            disabled={isFetching}
+                          >
+                            {ShowLoader && !error ? <Loader /> : "Log In"}
+                          </button>
+                        </div>
+                      </form>
+                      <span>
+                        Don't have an account yet? &nbsp;
+                        <Link to="/register">Create New</Link>
+                      </span>
+                      <span style={{ float: "right" }}>
+                        <Link to="/">Back to Home</Link>
+                      </span>
                     </div>
-                    <div className="pass-box">
-                      <input
-                        type={passwordType}
-                        className="searchbox"
-                        placeholder="Password..."
-                        onChange={(e) => setPassword(e.target.value)}
-                      />
-                      <img
-                        src="/assets/img/eye-i.svg"
-                        className="passwordshowbtn"
-                        onClick={togglePassword}
-                        alt=""
-                      />
-                    </div>
-                    <div className="pb-2">
-                      <input type="checkbox" id="Remamberme" /> &nbsp;
-                      <label htmlFor="Remamberme">Remamber me</label>
-                    </div>
-                    <Link to="">Forgot Password?</Link>
-                    <div className="mt-3 mb-2">
-                      <button
-                        className="login-btn"
-                        onClick={handlelogin}
-                        disabled={isFetching}
-                      >
-                        Log In
-                      </button>
-                    </div>
-                  </form>
-                  <span>
-                    Don't have an account yet? &nbsp;
-                    <Link to="/register">Create New</Link>
-                  </span>
+                  </div>
                 </div>
               </div>
-              <div className="col-md-6"></div>
-              <div className="backgrounddivbox">
-                <img className="" alt="" src="/assets/img/logBliend-i.svg" />
+            </div>
+          </div>
+          <div className="login-wrapper" style={{ height: "auto" }}>
+            <div className="container-fluid">
+              <div className="row justify-content-center align-items-center">
+                <div className="col-md-8 pb-5">
+                  <h1 className="text-uppercase font-weight-bold mb-4">
+                    fun facts about blinds{" "}
+                  </h1>
+                  <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum
+                  </p>
+                  <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum
+                  </p>
+                  <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum
+                  </p>
+                  <p>
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                    printer took a galley of type and scrambled it to make a
+                    type specimen book. It has survived not only five centuries,
+                    but also the leap into electronic typesetting, remaining
+                    essentially unchanged. It was popularised in the 1960s with
+                    the release of Letraset sheets containing Lorem Ipsum
+                    passages, and more recently with desktop publishing software
+                    like Aldus PageMaker including versions of Lorem Ipsum
+                  </p>
+                </div>
               </div>
             </div>
           </div>

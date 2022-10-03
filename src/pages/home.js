@@ -11,7 +11,7 @@ function Home() {
   return (
     <>
       <div className="Home-page-wrapper">
-        <div className="maindetailes-nav">
+        {/* <div className="maindetailes-nav">
           <div className="swapper-container">
             <Swiper
               modules={[Navigation, A11y, Autoplay]}
@@ -29,7 +29,7 @@ function Home() {
               </SwiperSlide>
             </Swiper>
           </div>
-        </div>
+        </div> */}
         <Navbar />
         <Herosection />
         <HowItWorks />

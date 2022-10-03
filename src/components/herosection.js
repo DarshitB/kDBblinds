@@ -51,11 +51,8 @@ function Herosection() {
           </div>
         </div>
         <div className="end-sec-herosection">
-          <h1>Blinds. Made Simple</h1>
-          <p>
-            KBD Blinds offers a fully fitted service for window blinds covering
-            most parts of East London.
-          </p>
+          <h1>Ordering Blinds Made Easy</h1>
+          <p>Delivering all over UK</p>
           <button className="big-btn">Know about Us more</button>
         </div>
       </div>

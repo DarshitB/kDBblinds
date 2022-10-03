@@ -51,9 +51,19 @@ const cartSlice = createSlice({
       state.products[itemindex].Qtyvalue += 1;
       state.total = state.total + action.payload.BliendPrice;
     },
+    emptyCart: (state) => {
+      state.quantity = 0;
+      state.products = [];
+      state.total = 0;
+    },
   },
 });
 
-export const { addProduct, removeProduct, decreaseCart, increaseCart } =
-  cartSlice.actions;
+export const {
+  addProduct,
+  removeProduct,
+  decreaseCart,
+  increaseCart,
+  emptyCart,
+} = cartSlice.actions;
 export default cartSlice.reducer;

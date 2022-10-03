@@ -4,7 +4,6 @@ import { Navigation, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Footer from "./footer";
-import LatestBliendCollaction from "./LatestBliendCollaction";
 import HowToMassure from "./HowToMassure";
 import { Link } from "react-router-dom";
 function HowItWorks() {
@@ -13,20 +12,20 @@ function HowItWorks() {
       <div className="howItWorkd-contaier">
         <div className="howItWorkd-box container">
           <h2>How it works</h2>
-          <div className="main-howitworks">
-            <div className="main-howitworks-items">
+          <div className="main-howitworks row">
+            <div className="main-howitworks-items col-md-4">
               <div className="main-howitworks-items-img">
                 <img src="/assets/img/scale.png" alt="" />
               </div>
               <p>Measure your windows by following our simple guidelines.</p>
             </div>
-            <div className="main-howitworks-items">
+            <div className="main-howitworks-items col-md-4">
               <div className="main-howitworks-items-img">
                 <img src="/assets/img/tick-check.png" alt="" />
               </div>
-              <p>Choose your perfect window blinds.</p>
+              <p>Choose your perfect window blinds and order easily.</p>
             </div>
-            <div className="main-howitworks-items">
+            <div className="main-howitworks-items col-md-4">
               <div className="main-howitworks-items-img">
                 <img src="/assets/img/cart.png" alt="" />
               </div>
@@ -40,7 +39,7 @@ function HowItWorks() {
       </div>
       <div className="sort-by-room">
         <div className="carosel-box">
-          <h2>Room Blinds</h2>
+          <h2>Types of Room</h2>
           <Swiper
             modules={[Navigation, A11y]}
             spaceBetween={24}
@@ -202,10 +201,10 @@ function HowItWorks() {
             <div className="col-md-3">
               <div className="inner-quality-container">
                 <div className="inner-quality-box">
-                  <h4>The Perfect Fit</h4>
+                  <h4>The Bespoke Fit</h4>
                   <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
+                    measure your window select your choice of window blinds
+                    along with the fabric and mechanism and place an order
                   </p>
                   <div className="overlat_num">01</div>
                 </div>
@@ -214,10 +213,10 @@ function HowItWorks() {
             <div className="col-md-3">
               <div className="inner-quality-container">
                 <div className="inner-quality-box">
-                  <h4>Next Day Dispatch Available</h4>
+                  <h4>48 hours Dispatch</h4>
                   <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
+                    once the order is placed within 48 hours it will be shipped
+                    and delivered in 10 working days.
                   </p>
                   <div className="overlat_num">02</div>
                 </div>
@@ -226,10 +225,10 @@ function HowItWorks() {
             <div className="col-md-3">
               <div className="inner-quality-container">
                 <div className="inner-quality-box">
-                  <h4>5 Year Quality Guarantee</h4>
+                  <h4>Offering 5 Year Warranty</h4>
                   <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
+                    Order products comes with a 5 year warranty so sit back and
+                    relax we got you covered!
                   </p>
                   <div className="overlat_num">03</div>
                 </div>
@@ -238,10 +237,10 @@ function HowItWorks() {
             <div className="col-md-3">
               <div className="inner-quality-container">
                 <div className="inner-quality-box">
-                  <h4>Installation Service</h4>
+                  <h4>Installation service</h4>
                   <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry.
+                    while placing your order now you can book an installation
+                    service for your product in selected areas.
                   </p>
                   <div className="overlat_num">04</div>
                 </div>
@@ -250,7 +249,6 @@ function HowItWorks() {
           </div>
         </div>
       </div>
-      <LatestBliendCollaction />
       <div className="footer-container">
         <div className="subscribe-for-update">
           <h2>Subscribe For Newsletter</h2>

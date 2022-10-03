@@ -479,7 +479,6 @@ function Products() {
               <h4>order your favorite basic sample</h4>
               <button className="sample-order-btn">Order Free Sample</button>
             </div>
-            <LatestBliendCollaction />
           </div>
         </div>
         <Footer />
